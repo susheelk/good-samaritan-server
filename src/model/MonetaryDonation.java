@@ -11,3 +11,4 @@ public class MonetaryDonation extends Donation {
         this.amount = amount;
     }
 }
+

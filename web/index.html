@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="knockout.js"></script>
+        <script src="jquery-3.2.1.min.js"></script>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            .page {
+                margin-left: 25%;
+            }
+            #heading {
+
+
+            }
+        </style>
+    </head>
+    <body class="">
+    <div id="Header">
+        <div class="w3-container w3-indigo w3-text-white w3-card-8">
+            <h1 style="font-size: 175%">GOOD SAMARITAN</h1>
+        </div>
+    </div>
+
+    <nav id="nav">
+        <div class="w3-sidebar w3-dark-grey w3-bar-block" style="width:25%">
+            <h3 class="w3-bar-item" data-bind="text: userName"></h3>
+            <p class="w3-panel"><span class="w3-tag w3-blue"><a data-bind="text: userPoints"></a><a> Points</a></span></p>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button "><i class="fa fa-home"></i>    Home</a>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-money"></i>  Rewards</a>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-user"></i>    Profile</a>
+        </div>
+    </nav>
+
+    <div id="login" class="page w3-panel">
+        <form data-bind="submit: login">
+            <input type="text" placeholder="email" id="email">
+            <input type="password" placeholder="password" id="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="dash" class="page w3-main w3-panel">
+        <h3 class="w3-card w3-panel">Dashboard</h3>
+        <div data-bind="foreach: posts">
+            <div class="w3-card w3-panel" style="padding-bottom: 5px">
+                <h4 data-bind="text: name" style="float: left;"></h4>
+                <p class="w3-panel" style="float: left;"><span class="w3-tag w3-blue"><a data-bind="text: pointsAwarded"></a><a> Points</a></span></p>
+                <span style="float: left;">
+                    <i class="fa fa-location-arrow"></i>
+                    <a data-bind="text: charity.name">      </a>
+                </span>
+                <p data-bind="text: description"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="Rewards" class="page w3-panel">
+        <h3>Rewards</h3>
+    </div>
+
+
+    </body>
+</html>

@@ -1,9 +1,6 @@
 package db;
 
-import model.Charity;
-import model.Donation;
-import model.MonetaryDonation;
-import model.User;
+import model.*;
 import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 
 import java.sql.Connection;
@@ -68,6 +65,26 @@ public class DatabaseAccessor implements SQLStrings{
         return monetaryDonations;
     }
 
+    public Set<PhysicalDonation> getNeededPhysicalDonations() {
+        Set<PhysicalDonation> physicalDonations = new HashSet<>();
+        try {
+            Connection connection = poolService.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getPhysicalDonationsSQL);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                PhysicalDonation donation = new PhysicalDonation();
+                donation.setName(rs.getString("item_needed"));
+                donation.setCharity(getCharityById(rs.getInt("charity_id")));
+                donation.setPointsAwarded(rs.getInt("points"));
+                donation.setDescription(rs.getString("description"));
+                physicalDonations.add(donation);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return physicalDonations;
+    }
+
     public Charity getCharityById(int id) {
         Charity charity = new Charity();
         try {
@@ -80,11 +97,14 @@ public class DatabaseAccessor implements SQLStrings{
                 charity.setName(rs.getString("charity_name"));
                 charity.setDescription(rs.getString("description"));
                 charity.setCategory(rs.getString("category"));
-                charity.setLocation(rs.getString("location"));
+//                charity.setLocation(rs.getString("address"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return charity;
     }
+
+
+
 }

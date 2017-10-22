@@ -20,6 +20,11 @@ public class LoginServlet extends AbstractServlet {
 
         User user = db.getUserByLogin(email, password);
         re.setData(user);
+
+        if(user.getName() == null) {
+            response.setStatus(400);
+            re.setError("Invalid Username or Password!!");
+        }
         return re;
     }
 
