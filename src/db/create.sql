@@ -13,7 +13,7 @@ CREATE TABLE app.charities(
   description text
 );
 
-CREATE TABLE app.donations_needed(
+CREATE TABLE app.physical_donations_needed(
   id SERIAL PRIMARY KEY,
   charity_id INTEGER REFERENCES app.charities (charity_id),
   item_needed VARCHAR(50) NOT NULL,
@@ -34,4 +34,11 @@ CREATE TABLE app.user_physical_donations(
   charity_id INTEGER REFERENCES app.charities (charity_id),
   description text,
   points_awarded INTEGER NOT NULL
+);
+
+CREATE TABLE app.monetary_donations_needed(
+  id SERIAL PRIMARY KEY,
+  charity_id INTEGER REFERENCES app.charities (charity_id),
+  amount INTEGER not NOT NULL,
+  points INTEGER NOT NULL
 );

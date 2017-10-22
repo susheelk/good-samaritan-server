@@ -1,11 +1,16 @@
 package db;
 
+import model.Charity;
+import model.Donation;
+import model.MonetaryDonation;
 import model.User;
 import org.postgresql.jdbc3.Jdbc3PoolingDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DatabaseAccessor implements SQLStrings{
 
@@ -40,5 +45,46 @@ public class DatabaseAccessor implements SQLStrings{
             e.printStackTrace();
         }
         return user;
+    }
+
+    public Set<MonetaryDonation> getNeededMonetaryDonations() {
+        Set<MonetaryDonation> monetaryDonations = new HashSet<>();
+        try {
+            Connection connection = poolService.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getMonetaryDonationsSQL);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                MonetaryDonation donation = new MonetaryDonation();
+                donation.setName(rs.getString("name"));
+                donation.setAmount(rs.getInt("amount"));
+                donation.setCharity(getCharityById(rs.getInt("charity_id")));
+                donation.setPointsAwarded(rs.getInt("points"));
+                donation.setDescription(rs.getString("description"));
+                monetaryDonations.add(donation);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return monetaryDonations;
+    }
+
+    public Charity getCharityById(int id) {
+        Charity charity = new Charity();
+        try {
+            Connection connection = poolService.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getCharityById);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                charity.setId(rs.getInt("charity_id"));
+                charity.setName(rs.getString("charity_name"));
+                charity.setDescription(rs.getString("description"));
+                charity.setCategory(rs.getString("category"));
+                charity.setLocation(rs.getString("location"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return charity;
     }
 }
